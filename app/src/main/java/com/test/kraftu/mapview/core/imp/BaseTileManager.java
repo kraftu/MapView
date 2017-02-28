@@ -14,6 +14,7 @@ import com.test.kraftu.mapview.core.TileResource;
 import com.test.kraftu.mapview.core.utils.MapThreadFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -168,7 +169,12 @@ public class BaseTileManager implements TileManager {
                     if (DEBUG) Log.d(TAG, String.format("id:%d from mTileRes:%b",
                             tileId, bitmap != null));
                     if (bitmap != null && mDiskCache != null) {
-                        mDiskCache.save(url, bitmap);
+                        try {
+                            mDiskCache.save(url, bitmap);
+                        }catch (IOException e){
+                            if (DEBUG) Log.e(TAG, String.format("mDiskCache id:%d exc::%s",
+                                    tileId, e.getMessage()));
+                        }
                     }
                 }
 
